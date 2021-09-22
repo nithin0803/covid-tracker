@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import axios from "axios";
+
 import {
     MenuItem,
     FormControl,
@@ -11,16 +11,25 @@ import {
 } from "@material-ui/core";
 import Infobox from "./Infobox";
 import Tablecountry from "./Tablecountry";
-import { sortcases, sortData, sortdeaths } from "./utili";
-import Maps from "./Maps";
+import { sortcases, sortData, sortdeaths, prettyPrintStat } from "./utili";
+import Map from "./Maps";
+import "leaflet/dist/leaflet.css";
 
 function App() {
-    const [countries, setCountries] = useState([]);
-    const [country, setCountry] = useState("Worldwide");
+    const [countries, setCountries] = useState([]); // list of countries
+    const [country, setCountry] = useState("Worldwide"); // country data
     const [countryInfo, setcountryInfo] = useState({ cases: "", deaths: "" });
     const [countryTable, setcountryTable] = useState([]);
-    const [sorting, setsorting] = useState(0);
+    const [sorting, setsorting] = useState(localStorage.getItem("sorting"));
+    const [mapcenter, setmapcenter] = useState({
+        lat: 34.80746,
+        lng: -40.4796,
+    });
+    const [mapzoom, setmapzoom] = useState(2.5);
+    const [mapCountries, setmapCountries] = useState([]);
+    const [casesType, setCasesType] = useState("cases");
     var axios = require("axios").default;
+    const API__KEY = "080aeac5d59dd216460bb96cf19b628e";
 
     var options = {
         method: "GET",
@@ -45,10 +54,10 @@ function App() {
             await axios
                 .request(options4)
                 .then(function (res) {
-                    if (sorting === 0) {
+                    if (sorting == 0) {
                         const sortedData = sortData(res.data.response);
                         setcountryTable(sortedData);
-                    } else if (sorting === 1) {
+                    } else if (sorting == 1) {
                         const sortedData = sortcases(res.data.response);
                         setcountryTable(sortedData);
                     } else {
@@ -58,6 +67,11 @@ function App() {
                 })
                 .catch(function (error) {
                     console.error(error);
+                });
+            fetch("https://disease.sh/v3/covid-19/countries")
+                .then((response) => response.json())
+                .then((data) => {
+                    setmapCountries(data);
                 });
         }
         fetchalldata();
@@ -119,13 +133,22 @@ function App() {
             .then(function (res) {
                 res.data.response.map((info) => {
                     setcountryInfo(info);
-                    console.log(info);
                 });
             })
             .catch(function (error) {
                 console.error(error);
             });
+        await fetch(`https://disease.sh/v3/covid-19/countries/${countryCode}`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+
+                setmapcenter([data.countryInfo.lat, data.countryInfo.long]);
+                setmapzoom(4);
+            });
     };
+    console.log(localStorage);
+    console.log(casesType)
 
     return (
         <div className="App">
@@ -148,32 +171,36 @@ function App() {
 
                 <div className="status">
                     <Infobox
+                        isRed
+                        onClick={(e) => setCasesType("cases")}
+                        active={casesType === "cases"}
                         title="New Cases"
-                        cases={countryInfo.cases.new}
-                        total={countryInfo.cases.total}
+                        cases={prettyPrintStat(countryInfo.cases.new)}
+                        total={prettyPrintStat(countryInfo.cases.total)}
                     />
+
                     <Infobox
-                        title="Active Cases"
-                        cases={countryInfo.cases.active}
-                        total={countryInfo.cases.total}
-                    />
-                    <Infobox
-                        title="Critical Cases"
-                        cases={countryInfo.cases.critical}
-                        total={countryInfo.cases.total}
-                    />
-                    <Infobox
+                        onClick={(e) => setCasesType("recovered")}
+                        active={casesType === "recovered"}
                         title="Recovered"
-                        cases={countryInfo.cases.recovered}
-                        total={countryInfo.cases.total}
+                        cases={prettyPrintStat(countryInfo.cases.recovered)}
+                        total={prettyPrintStat(countryInfo.cases.total)}
                     />
                     <Infobox
+                        isRed
+                        onClick={(e) => setCasesType("deaths")}
+                        active={casesType === "deaths"}
                         title="Deaths"
-                        cases={countryInfo.deaths.new}
-                        total={countryInfo.deaths.total}
+                        cases={prettyPrintStat(countryInfo.deaths.new)}
+                        total={prettyPrintStat(countryInfo.deaths.total)}
                     />
                 </div>
-                <Maps />
+                <Map
+                    countries={mapCountries}
+                    casesType={casesType}
+                    center={mapcenter}
+                    zoom={mapzoom}
+                />
             </div>
             <Card className="app__right">
                 <CardContent>

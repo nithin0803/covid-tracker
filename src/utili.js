@@ -1,13 +1,74 @@
-export const sortData =(data)=>{
-    const sortedData = [...data]
-    return sortedData.sort((a,b)=>b.cases.new-a.cases.new)
-}
-export const sortcases = (data)=>{
-    const sortedData = [...data]
-    return sortedData.sort((a,b)=>b.cases["1M_pop"]-a.cases["1M_pop"])
-}
+import React from "react";
+import numeral from "numeral";
+import { Circle, Popup } from "react-leaflet";
 
-export const sortdeaths = (data)=>{
-    const sortedData = [...data]
-    return sortedData.sort((a,b)=>b.deaths["1M_pop"]-a.deaths["1M_pop"])
-}
+const casesTypeColors = {
+    cases: {
+        hex: "#CC1034",
+
+        multiplier: 250,
+    },
+    recovered: {
+        hex: "#7dd71d",
+
+        multiplier: 200,
+    },
+    deaths: {
+        hex: "#fb4443",
+
+        multiplier: 800,
+    },
+};
+
+export const sortData = (data) => {
+    const sortedData = [...data];
+    return sortedData.sort((a, b) => b.cases.new - a.cases.new);
+};
+export const sortcases = (data) => {
+    const sortedData = [...data];
+    return sortedData.sort((a, b) => b.cases["1M_pop"] - a.cases["1M_pop"]);
+};
+
+export const sortdeaths = (data) => {
+    const sortedData = [...data];
+    return sortedData.sort((a, b) => b.deaths["1M_pop"] - a.deaths["1M_pop"]);
+};
+
+export const prettyPrintStat = (stat) =>
+    stat ? `+${numeral(stat).format("0.0a")}` : "+0";
+
+
+export const showDataOnMap = (data, casesType) =>
+    data.map((country) => (
+        <Circle
+            center={[country.countryInfo.lat, country.countryInfo.long]}
+            color={casesTypeColors[casesType].hex}
+            fillColor={casesTypeColors[casesType].hex}
+            fillOpacity={0.4}
+            radius={
+                Math.sqrt(country[casesType]) *
+                casesTypeColors[casesType].multiplier
+            }
+        >
+            <Popup>
+                <div className="info-container">
+                    <div
+                        className="info-flag"
+                        style={{
+                            backgroundImage: `url(${country.countryInfo.flag})`,
+                        }}
+                    ></div>
+                    <div className="info-name">{country.country}</div>
+                    <div className="info-confirmed">
+                        Cases: {numeral(country.cases).format("0,0")}
+                    </div>
+                    <div className="info-recovered">
+                        Recovered: {numeral(country.recovered).format("0,0")}
+                    </div>
+                    <div className="info-deaths">
+                        Deaths: {numeral(country.deaths).format("0,0")}
+                    </div>
+                </div>
+            </Popup>
+        </Circle>
+    ));

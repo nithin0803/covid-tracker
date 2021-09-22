@@ -11,6 +11,12 @@ body {
     justify-content: space-between;
     padding: 20px;
 }
+.App img {
+    position: absolute;
+    z-index: -1;
+
+    mask-repeat: repeat-y;
+}
 .header {
     display: flex;
     flex-direction: row;
@@ -30,15 +36,57 @@ body {
     overflow-y: scroll;
     color: #6a5d5d;
 }
+
 .table::-webkit-scrollbar {
     display: none;
 }
 .table tr:nth-of-type(odd) {
     background-color: #f3f2f8;
 }
+.table td:nth-child(3):hover {
+    background-color: #0d73c140;
+}
+.table td:nth-child(4):hover {
+    background-color: #c10d0d40;
+}
+.table td:nth-child(5):hover {
+    background-color: #0dc16a40;
+}
+.table th:nth-child(6) {
+    padding-right: 10px;
+}
 .table td {
     padding: 0.5rem;
 }
+.table button {
+    border: none;
+    background-color: transparent;
+    font-weight: 700;
+    font-size: 15px;
+    color: #6a5d5d;
+    transition: transform 450ms;
+    cursor: pointer;
+}
+.table button:hover {
+    transform: scale(1.07);
+    
+}
+.cper:hover {
+    background-color: rgba(243, 166, 65, 0.6);
+
+    border-radius: 5px;
+}
+.dper:hover {
+    background-color: rgba(248, 42, 42, 0.6);
+
+    border-radius: 5px;
+}
+.new:hover {
+    background-color: rgba(165, 153, 153, 0.6);
+
+    border-radius: 5px;
+}
+
 
 @media (max-width: 990px) {
     .App {

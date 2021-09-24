@@ -5,11 +5,11 @@ import numeral from "numeral";
 function Tablecountry({countries,setsorting}) {
     const newCases= ()=>{
         setsorting(0)
-        localStorage.setItem("sorting",0)
+        sessionStorage.setItem("sorting",0)
     }
     const cases= ()=>{
         setsorting(1)
-        localStorage.setItem("sorting",1)
+        sessionStorage.setItem("sorting",1)
     }
     // const active= ()=>{
     //     setsorting(3)
@@ -22,7 +22,7 @@ function Tablecountry({countries,setsorting}) {
     // }
     const deaths= ()=>{
         setsorting(2)
-        localStorage.setItem("sorting",2)
+        sessionStorage.setItem("sorting",2)
     }
     
     return (

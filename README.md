@@ -1,3 +1,14 @@
+# COVID-TRACKER
+
+The COVID Tracking Project collects and publishes the most complete testing data available for all Countries around the world from [Rapid API](https://rapidapi.com/api-sports/api/covid-193/). It allows you to display data based on the selection of countries and also to filter data based on New Cases,Cases per Million population, Deaths per million population.
+
+# Live Demo
+
+Open [https://covid-tracker-d5f0b.web.app/](https://covid-tracker-d5f0b.web.app/) to view it in the browse.
+
+# Preview
+![Chat](https://github.com/Yajassardana/Ges-Chat/blob/master/Chat_Preview.png)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

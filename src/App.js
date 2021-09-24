@@ -7,8 +7,8 @@ import {
     Select,
     Card,
     CardContent,
-    Table,
-} from "@material-ui/core";
+}
+from "@material-ui/core";
 import Infobox from "./Infobox";
 import Tablecountry from "./Tablecountry";
 import { sortcases, sortData, sortdeaths, prettyPrintStat } from "./utili";
@@ -20,7 +20,9 @@ function App() {
     const [country, setCountry] = useState("Worldwide"); // country data
     const [countryInfo, setcountryInfo] = useState({ cases: "", deaths: "" });
     const [countryTable, setcountryTable] = useState([]);
-    const [sorting, setsorting] = useState(localStorage.getItem("sorting"));
+    const [sorting, setsorting] = useState(
+        !(sessionStorage.length == 0) ? sessionStorage.getItem("sorting") : "0"
+    );
     const [mapcenter, setmapcenter] = useState({
         lat: 34.80746,
         lng: -40.4796,
@@ -147,8 +149,6 @@ function App() {
                 setmapzoom(4);
             });
     };
-    console.log(localStorage);
-    console.log(casesType)
 
     return (
         <div className="App">

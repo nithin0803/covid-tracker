@@ -58,6 +58,14 @@ body {
 .table td {
     padding: 0.5rem;
 }
+.table th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    color: white;
+    background: #9a9a9d;
+    border-bottom: 2px solid white;
+}
 .table button {
     border: none;
     background-color: transparent;
@@ -67,29 +75,40 @@ body {
     transition: transform 450ms;
     cursor: pointer;
 }
+
+.table th:first-child {
+    background-color: #9a9a9d;
+    position: sticky;
+    left: 0;
+    z-index: 3;
+}
 .table button:hover {
     transform: scale(1.07);
-    
 }
 .cper:hover {
-    background-color: rgba(243, 166, 65, 0.6);
-
+    background-color: rgba(248, 47, 47, 0.6);
+    color: white;
     border-radius: 5px;
 }
 .dper:hover {
-    background-color: rgba(248, 42, 42, 0.6);
-
+    background-color: rgba(23, 23, 23, 0.6);
+    color: white;
     border-radius: 5px;
 }
 .new:hover {
-    background-color: rgba(165, 153, 153, 0.6);
+    background-color: rgba(240, 230, 230, 0.6);
 
     border-radius: 5px;
 }
 
-
-@media (max-width: 990px) {
+@media (max-width: 1000px) {
     .App {
         flex-direction: column;
+    }
+    .table td:first-child {
+        background-color: white;
+        position: sticky;
+        left: 0;
+        z-index: 2;
     }
 }
